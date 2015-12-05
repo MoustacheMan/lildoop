@@ -1,0 +1,17 @@
+1.) Receive File
+2.) Save file to two lowest storage nodes
+4.) update master node storage information
+3.) Return id of file to client
+
+
+
+1.) Get request for file
+	- If file exists
+		- goto step 2
+	- If file not found
+		- return exception
+2.) If file exists
+	- If more than one file with name
+		- return list of files with id
+	- If one file exists
+		- return file
