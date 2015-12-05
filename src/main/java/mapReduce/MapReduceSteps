@@ -1,7 +1,6 @@
 1) Get Data
 2) Split up Data
 3) Send Data to nodes and map
-	-Push mapper out to all workers
 	-Works start asking for data
 	-Only give data for current mapper
 4) Get mapped data back
@@ -9,12 +8,36 @@
 	-As get maps back, give to dispatcher to combine
 5) Combine mapped data
 6) Send mapped data to nodes and reduce
-	-Push reducer out to all workers and tell all workers to delete mapper
 	-Workers start asking for mapped data
 	-Only give mapped data for current reducer
 7) Get reduced data back
 	-Workers send reduced data back
 	-As get maps back, give to dispatcher to combine
 8) Save reduced data (not sure how to save it)
+	-Tell workers to delete mapper and reducer implementation files
 	-Save one file with all key value pairs
 9) Send results to person who asked for data to be processed (if they left an address to send to)
+
+
+HTTPLayer
+=======================================================
+public void run() {
+	//Wait for request
+	//Once gotten request
+		//Start MapReduce
+	//Wait mapping to finish
+	//Combine maps
+	//Tell workers ready for reduce
+	//Once Reduce finished
+		//Save data gotten back from MapReduce
+		//Give data to who asked for it
+}
+
+private void startMapReduce() {
+	//Get Data
+	//Split Data
+	//Make given Mapper
+	//Make given Reducer
+	//Make dispatcher
+	//Tell Workers to start
+}
