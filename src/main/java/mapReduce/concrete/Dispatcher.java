@@ -1,17 +1,12 @@
 package mapReduce.concrete;
 
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import lildoop.FileNode;
 import mapReduce.interfaces.Mapper;
 import mapReduce.interfaces.Reducer;
-import mapReduce.interfaces.WorkerNode;
 
 public class Dispatcher<K,V,T> {
 	
