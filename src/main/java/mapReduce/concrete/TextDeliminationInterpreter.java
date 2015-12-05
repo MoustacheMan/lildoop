@@ -10,7 +10,7 @@ import mapReduce.interfaces.DataSplitter;
 public class TextDeliminationInterpreter implements DataSplitter<String> {
 
 	@Override
-	public String[] splitData(File data) {
+	public String[] splitData(String data) {
 		String[] returnData = null;
 		try(Scanner scanner = new Scanner(new FileInputStream(data));) {
 			returnData = scanner.nextLine().split(",");
