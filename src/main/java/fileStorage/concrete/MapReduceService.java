@@ -4,21 +4,15 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import mapReduce.concrete.Dispatcher;
-import mapReduce.interfaces.Mapper;
-import mapReduce.interfaces.Reducer;
 
 @Path("/mapReduce")
 public class MapReduceService {
 	
 	private Dispatcher currentDispatcher;
 	
-	private <K,V,T> void startMapReduce(Mapper<K,V,T> mapper, Reducer<K,V> reducer, String fileDataPath, String lilDoopAddress) {
-		
-	}
 	
 	@Path("/status")
 	@GET
