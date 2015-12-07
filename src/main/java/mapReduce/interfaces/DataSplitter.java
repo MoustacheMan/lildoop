@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface DataSplitter<T> {
 	
-	public T[] splitData(File data);
+	public T[] splitData(String data);
 
 }
