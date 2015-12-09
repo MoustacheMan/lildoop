@@ -71,6 +71,14 @@ public class Dispatcher<K,V,T> {
 		}
 	}
 	
+//	public boolean isMapping() {
+//		
+//	}
+//	
+//	public boolean processingRequest() {
+//		
+//	}
+	
 	public Mapper<K,V,T> getMapper() { return mapper; }
 	
 	public Map<K, List<V>> getMappedData() { return mappedData; }
@@ -82,6 +90,4 @@ public class Dispatcher<K,V,T> {
 	public boolean hasDataToMap() {
 		return currentDataIndex < data.length;
 	}
-	
-	
 }
