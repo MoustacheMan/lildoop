@@ -1,6 +1,9 @@
 package fileStorage.concrete;
 
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,8 +28,8 @@ public class LilDoopService {
 	@GET
 	public String getWorkers() {
 		String s = null;
-		for(FileNode n : f.nodes){
-			s += ", " + n.ip;
+		for(String n : f.ips){
+			s += ", " + n;
 		}
 		return s;
 	}
@@ -35,15 +38,14 @@ public class LilDoopService {
 	@Consumes("text/plain")
 	@POST
 	public String joinFileSystem(@QueryParam("ip") String value) {
-		FileNode n = new FileNode(value);
-		f.addNode(n);
+		f.addNode(value);
 		return "Joined";
 	}
 	
 	@Path("/get")
 	@Consumes("text/plain")
 	@POST
-	public String getFile(@QueryParam("file") String value) {
+	public String getFile(@QueryParam("file") String value) throws NumberFormatException, MalformedURLException, IOException {
 		if(value.contains(".")){
 			return f.retrieveData(value);
 		}else{
@@ -54,7 +56,7 @@ public class LilDoopService {
 	@Path("/delete")
 	@Consumes("text/plain")
 	@POST
-	public String deleteFile(@QueryParam("file") String value) {
+	public String deleteFile(@QueryParam("file") String value) throws NumberFormatException, MalformedURLException, IOException {
 		if(value.contains(".")){
 			f.delete(value);
 		}else{
@@ -70,6 +72,10 @@ public class LilDoopService {
 	@Path("/save")
 	public String sendResponse(@QueryParam("fileName") String name, @QueryParam("fileContent") String content) {
 		System.out.println("Got: " + name + " and " + content);
-		return ""+f.storeData(name, content);
+		try {
+			return ""+f.storeData(name, content);
+		} catch (Exception e) {
+			return "Sorry, it broke :(";
+		}
 	}
 }
