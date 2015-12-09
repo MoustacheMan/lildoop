@@ -1,5 +1,9 @@
 package fileStorage.concrete;
 
+import java.awt.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.Map;
 
 import javax.print.attribute.HashDocAttributeSet;
@@ -87,23 +91,31 @@ public class MapReduceService {
 	
 	@Path("/addMapResult")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addMapResult() {
-		//Break up JSON if need be (deserialization) // They will be sending a map so this may change
-		//add map to dispatcher
-		//Create 'ok' response
-		//return response
-		return null;
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	public Response addMapResult(InputStream input) throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(input);
+		Map<?,List> mapperResult = (Map<?,List>)ois.readObject();
+		if(mapperResult != null)
+		{
+			currentDispatcher.addMappedData(mapperResult);
+			
+			return Response.ok("200").build();
+		}
+		
+		return Response.noContent().build();
 	}
 	
 	@Path("/addReduceResult")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addReduceResult() {
-		//Break up JSON if need be (deserialization) // They will be sending a map so this may change
-		//add reduced data to dispatcher
-		//Create 'ok' response
-		//return response
-		return null;
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	public Response addReduceResult(InputStream input) throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(input);
+		Map<?,?> reduceResult = (Map<?,?>)ois.readObject();
+		if(reduceResult != null)
+		{
+			currentDispatcher.addReducedData(reduceResult);
+			return Response.ok("200").build();
+		}
+		return Response.noContent().build();
 	}
 }
