@@ -1,8 +1,8 @@
 package fileStorage.concrete;
 
+import java.util.List;
 import java.util.Map;
 
-import javax.print.attribute.HashDocAttributeSet;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -44,34 +44,46 @@ public class MapReduceService {
 	@Path("/getWork")
 	@POST
 	@Consumes(MediaType.WILDCARD)
-	public Response getNextWork() {
+	public Response getNextWork(int workAmount) {
 		//[Have to know when were mapping or reducing here]
 		ResponseBuilder builder = Response.ok();
-		Object jobPerformerToSend = null;
 		String jobType = null;
-		int workAmount = 0;
-		Map work = null;
+//		int workAmount = 0; // need this from request
+		Object work = null;
 		//When mapping
-		if (currentDispatcher.hasDataToMap()) {
+		if (currentDispatcher.isMapping()) {
 			//get next data set to map
-			currentDispatcher.getNextDataSetToMap(workAmount);
+			work = currentDispatcher.getNextDataSetToMap(workAmount);
 			//set job type to map
-			jobPerformerToSend = currentDispatcher.getMapper();
 			jobType = "map";
 		} else {
 		//When reducing	
 			//get next mapped data set to reduce
-			currentDispatcher.getNextMappedData(workAmount);
+			work = currentDispatcher.getNextMappedData(workAmount);
 			//set job type to reduce
-			jobPerformerToSend = currentDispatcher.getReducer();
 			jobType = "reduce";
 		}	
 		
 		//form JSON with data and mapper or reducer according to job type
 		//create response with job type header and JSON
 		builder.header("X-JobType", jobType);
-//		builder.entity();
+		builder.entity(work);
 		//return the response
+		return builder.build();
+	}
+	
+	@Path("/getWorkClass")
+	@GET
+	public Response getWorkClass(String jobType) {
+		Object workClass = null;
+		if (jobType.equals("map")) {
+			workClass = currentDispatcher.getMapper();
+		} else if (jobType.equals("reduce")) {
+			workClass = currentDispatcher.getReducer();
+		}
+		
+		ResponseBuilder builder = Response.ok();
+		builder.entity(workClass);
 		return builder.build();
 	}
 	

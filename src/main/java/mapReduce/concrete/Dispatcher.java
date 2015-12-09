@@ -20,12 +20,14 @@ public class Dispatcher<K,V,T> {
 	
 	
 	private int currentDataIndex;
+	private boolean isMapping;
 	private T[] data;
 	
 	public Dispatcher(Mapper<K,V,T> mapper, Reducer<K,V> reducer, T[] data) {
 		this.mapper = mapper;
 		this.reducer = reducer;
 		this.data = data;
+		this.isMapping = true;
 		
 		currentDataIndex = 0;
 		
@@ -39,7 +41,7 @@ public class Dispatcher<K,V,T> {
 			endIndex = data.length;
 		}
 		List<T> subArray = new ArrayList<T>();
-		for(;currentDataIndex < endIndex; currentDataIndex++) {
+		for(;isMapping = currentDataIndex < endIndex; currentDataIndex++) {
 			subArray.add(data[currentDataIndex]);
 		}
 		return subArray;
@@ -89,5 +91,9 @@ public class Dispatcher<K,V,T> {
 	
 	public boolean hasDataToMap() {
 		return currentDataIndex < data.length;
+	}
+	
+	public boolean isMapping() {
+		return this.isMapping;
 	}
 }
