@@ -27,7 +27,7 @@ public class FileMaster {
 			FileClient temp = new FileClient(n);
 			l = temp.storeFile(fileName, content);
 			}else{
-				local.storeData(fileName, content);
+				l = local.storeData(fileName, content);
 			}
 		}
 		return l;
@@ -39,7 +39,7 @@ public class FileMaster {
 			FileClient temp = new FileClient(n);
 			return temp.retrieveFile(""+l);
 			}else{
-				local.retrieveData(l);
+				return local.retrieveData(l);
 			}
 		}
 		return null;
@@ -51,7 +51,7 @@ public class FileMaster {
 			FileClient temp = new FileClient(n);
 			return temp.retrieveFile(fileName);
 			}else{
-				local.retrieveData(fileName);
+				return local.retrieveData(fileName);
 			}
 		}
 		return null;

@@ -75,6 +75,7 @@ public class LilDoopService {
 		try {
 			return ""+f.storeData(name, content);
 		} catch (Exception e) {
+			System.out.println(e);
 			return "Sorry, it broke :(";
 		}
 	}
