@@ -1,11 +1,10 @@
 package fileStorage.interfaces;
 
-import java.io.File;
-
 public interface FileWorker {
 
-	public int storeData(File file);
-	public File retrieveData(int id);
-	public File retrieveData(String fileName);
-	public void delete(int id);
+	public long storeData(String fileName, String content);
+	public String retrieveData(long id);
+	public String retrieveData(String fileName);
+	public void delete(long id);
+	public void delete(String fileName);
 }
