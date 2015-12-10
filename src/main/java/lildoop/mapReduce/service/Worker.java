@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 import lildoop.fileStorage.enums.RequestType;
+import lildoop.fileStorage.service.Messenger;
 
 public class Worker implements Runnable {
 	
@@ -26,9 +27,9 @@ public class Worker implements Runnable {
 		while(keepRunning) {
 			//Ask for work
 			try {
-				HttpURLConnection con = createConnection("/rest/mapReduce/getData", RequestType.GET);
+				HttpURLConnection con = Messenger.createConnection(masterIP + "/rest/mapReduce/getData", RequestType.GET, "application/json");
 				//if got work
-				if(con.getResponseCode())
+//				if(con.getResponseCode())
 					//get query
 					//do query
 					//return list of result objects
@@ -41,33 +42,6 @@ public class Worker implements Runnable {
 			}
 		}
 		
-	}
-	
-	private HttpURLConnection createConnection(String url, RequestType type)
-			throws MalformedURLException, IOException {
-
-		HttpURLConnection connection = null;
-		String queryString = "";
-		
-		queryString = queryString.substring(0, queryString.length()-1);
-
-		connection = (HttpURLConnection) new URL(this.masterIP + "" + url).openConnection();
-		connection.setDoOutput(true);
-
-		switch (type) {
-		case POST:
-			connection.setRequestMethod("POST");
-			break;
-		case GET:
-			connection.setRequestMethod("GET");
-			break;
-		default:
-			break;
-		}
-
-		connection.setRequestProperty("Content-type", "application/json");
-
-		return connection;
 	}
 
 }
