@@ -11,6 +11,7 @@ public class FileMaster {
 	static ArrayList<String> ips = new ArrayList<String>();
 	long id = 0;
 	FileNode local = new FileNode(null);
+	int serverLocation = 0;
 	
 	public FileMaster(){
 		System.out.println("Created");
@@ -23,15 +24,18 @@ public class FileMaster {
 	
 	public long storeData(String fileName, String content) throws MalformedURLException, IOException {
 		long l = -1;
-		for(String n : ips){
-			if(n!=null){
-			FileClient temp = new FileClient(n);
+		id++;
+		for(int i = 0; i<2; i++){
+			if(serverLocation>ips.size())
+				i=0;
+			if(ips.get(serverLocation)!=null){
+			FileClient temp = new FileClient(ips.get(serverLocation));
 			l = temp.storeFile(fileName, content);
 			}else{
 				l = local.storeData(fileName, content, id);
 			}
+			serverLocation++;
 		}
-		id++;
 		return id;
 	}
 
