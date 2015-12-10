@@ -27,9 +27,9 @@ public class LilDoopService {
 	@Path("/workers")
 	@GET
 	public String getWorkers() {
-		String s = null;
+		String s = "Current Workers: ";
 		for(String n : f.ips){
-			s += ", " + n;
+			s += n + "\n";
 		}
 		return s;
 	}

@@ -9,6 +9,7 @@ import lildoop.fileStorage.client.FileClient;
 public class FileMaster {
 	
 	static ArrayList<String> ips = new ArrayList<String>();
+	long id = 0;
 	FileNode local = new FileNode(null);
 	
 	public FileMaster(){
@@ -27,10 +28,11 @@ public class FileMaster {
 			FileClient temp = new FileClient(n);
 			l = temp.storeFile(fileName, content);
 			}else{
-				l = local.storeData(fileName, content);
+				l = local.storeData(fileName, content, id);
 			}
 		}
-		return l;
+		id++;
+		return id;
 	}
 
 	public String retrieveData(long l) throws MalformedURLException, IOException {
