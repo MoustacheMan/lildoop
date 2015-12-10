@@ -12,6 +12,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import lildoop.fileStorage.enums.RequestType;
+import lildoop.fileStorage.service.Messenger;
 
 public class FileClient {
 
@@ -145,5 +146,30 @@ public class FileClient {
 		}
 
 		return out;
+	}
+
+	/*
+	 * this is for send the job to master
+	 * POST
+	 */
+	public void Start(String json) throws MalformedURLException, IOException
+	{
+		
+//		String url = "baseUrl" +"/mapReduce/start";
+//		HttpURLConnection connection = Messenger.createConnection(url, RequestType.POST, "application/json");
+//		connection.connect();
+	
+	}
+	/*
+	 * this will check and see if the status is complete
+	 */
+	public String getStatus()
+	{
+		return "";
+	}
+
+	public String GetTheResult()
+	{
+		return "";
 	}
 }
