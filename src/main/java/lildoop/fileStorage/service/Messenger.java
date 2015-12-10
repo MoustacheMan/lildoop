@@ -11,12 +11,12 @@ import lildoop.fileStorage.enums.RequestType;
 
 public class Messenger {
 	
-	private static final String MASTER_ADDRESSE = "http://localhost:8080/restful/";
+	private static final String MASTER_ADDRESS = "http://localhost:8080/restful/";
 	
-	public static HttpURLConnection mapReducePostJSON(String url, RequestType type, String json)
+	public static HttpURLConnection postJSON(String url, String json)
 			throws MalformedURLException, IOException {
 
-		HttpURLConnection connection = (HttpURLConnection) new URL(MASTER_ADDRESSE + url).openConnection();
+		HttpURLConnection connection = (HttpURLConnection) new URL(MASTER_ADDRESS + url).openConnection();
 		connection.setDoOutput(true);
 
 		connection.setRequestProperty("Content-type", "application/json");
