@@ -1,4 +1,4 @@
-package fileStorage.concrete;
+package lildoop.fileStorage.service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import fileStorage.interfaces.FileWorker;
+import lildoop.fileStorage.interfaces.FileWorker;
 
 public class FileNode implements FileWorker{
 	

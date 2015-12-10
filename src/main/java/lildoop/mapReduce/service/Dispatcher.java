@@ -1,4 +1,4 @@
-package mapReduce.concrete;
+package lildoop.mapReduce.service;
 
 public class Dispatcher<K,V,T> {
 	

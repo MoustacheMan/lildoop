@@ -1,4 +1,4 @@
-package fileStorage.client;
+package lildoop.fileStorage.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Map;
 
-import fileStorage.enums.RequestType;
+import lildoop.fileStorage.enums.RequestType;
 
 public class FileClient {
 
