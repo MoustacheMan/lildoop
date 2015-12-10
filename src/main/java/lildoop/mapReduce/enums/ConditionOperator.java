@@ -8,6 +8,14 @@ public enum ConditionOperator {
 			return param.equals(value);
 		}
 	},
+	
+	NOT_EQUAL
+	{
+		public boolean checkCondition(String value, String param) {
+			return !param.equals(value);
+		}
+	},
+	
 	LESS_THAN
 	{
 		@Override
