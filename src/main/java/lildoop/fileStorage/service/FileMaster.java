@@ -27,7 +27,7 @@ public class FileMaster {
 		id++;
 		for(int i = 0; i<2; i++){
 			if(serverLocation>ips.size())
-				i=0;
+				serverLocation=0;
 			if(ips.get(serverLocation)!=null){
 			FileClient temp = new FileClient(ips.get(serverLocation));
 			l = temp.storeFile(fileName, content);
