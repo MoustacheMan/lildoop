@@ -31,5 +31,16 @@ public class Messenger {
 
 		return connection;
 	}
+	
+	public static HttpURLConnection requestJSON(String url) throws MalformedURLException, IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(MASTER_ADDRESS + url).openConnection();
+		connection.setRequestProperty("Content-type", "text/plain");
+		connection.setRequestProperty("Accept-Charset", "UTF-8");
+		connection.setRequestMethod("GET");
+		
+		connection.connect();
+		
+		return connection;
+	}
 
 }

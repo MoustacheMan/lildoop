@@ -1,6 +1,7 @@
 package lildoop.mapReduce.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,7 +28,7 @@ public class Worker implements Runnable {
 		while(keepRunning) {
 			//Ask for work
 			try {
-				HttpURLConnection con = Messenger.postJSON("/mapReduce/getData", "application/json");
+				HttpURLConnection con = Messenger.requestJSON("/mapReduce/getData");
 				//if got work
 				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					//get query
@@ -42,6 +43,9 @@ public class Worker implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private Query getQueryFromStream(InputStream stream) {
 		
 	}
 
