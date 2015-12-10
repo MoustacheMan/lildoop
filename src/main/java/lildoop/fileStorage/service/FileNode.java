@@ -54,8 +54,8 @@ public class FileNode implements FileWorker{
 		    while ((str = in.readLine()) != null)
 		        sent += str;
 		    in.close();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			return e.getMessage();
 		}
 		return sent;
 	}
