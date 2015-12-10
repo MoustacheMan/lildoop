@@ -25,6 +25,7 @@ public class FileNode implements FileWorker{
 	public long storeData(String fileName, String content) {
 		try {
 			File file = new File("C:\\LilDoopFS\\"+fileName);
+			file.mkdir();
 			BufferedWriter out;
 
 			out = new BufferedWriter(new FileWriter(file));
