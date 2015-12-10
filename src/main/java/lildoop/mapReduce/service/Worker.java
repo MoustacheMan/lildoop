@@ -1,15 +1,20 @@
 package lildoop.mapReduce.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import lildoop.fileStorage.enums.RequestType;
 import lildoop.fileStorage.service.Messenger;
+import lildoop.mapReduce.models.Query;
 
 public class Worker implements Runnable {
 	
@@ -32,6 +37,7 @@ public class Worker implements Runnable {
 				//if got work
 				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					//get query
+					Query query = getQueryFromStream(con.getInputStream());
 					//do query
 					//return list of result objects
 				}
@@ -46,7 +52,16 @@ public class Worker implements Runnable {
 	}
 	
 	private Query getQueryFromStream(InputStream stream) {
-		
+		Query newQuery = null;
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		try {
+			String json = reader.readLine();
+			newQuery = new Query(new JSONObject(json));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return newQuery;
 	}
 
 }
