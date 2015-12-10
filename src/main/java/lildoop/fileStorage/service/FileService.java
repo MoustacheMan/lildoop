@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 @Singleton
 @Path("/file")
-public class LilDoopService {
+public class FileService {
 	FileMaster f = new FileMaster();
 	
 	@Path("/message")
