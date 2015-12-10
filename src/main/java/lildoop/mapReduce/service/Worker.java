@@ -27,12 +27,13 @@ public class Worker implements Runnable {
 		while(keepRunning) {
 			//Ask for work
 			try {
-				HttpURLConnection con = Messenger.createConnection(masterIP + "/rest/mapReduce/getData", RequestType.GET, "application/json");
+				HttpURLConnection con = Messenger.postJSON("/mapReduce/getData", "application/json");
 				//if got work
-//				if(con.getResponseCode())
+				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					//get query
 					//do query
 					//return list of result objects
+				}
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
