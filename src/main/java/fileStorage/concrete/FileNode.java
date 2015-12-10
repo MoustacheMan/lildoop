@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Map;
 
 import fileStorage.interfaces.FileWorker;
 
@@ -22,7 +23,7 @@ public class FileNode implements FileWorker{
 	}
 
 	@Override
-	public long storeData(String fileName, String content) {
+	public long storeData(String fileName, String content, long id) {
 		new File("C:\\LilDoopFS\\").mkdirs();
 		try {
 			File file = new File("C:\\LilDoopFS\\"+fileName);
@@ -35,13 +36,17 @@ public class FileNode implements FileWorker{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Long id = System.currentTimeMillis();
 		hm.put(id, fileName);
 		return  id;
 	}
 
 	@Override
 	public String retrieveData(long l) {
+		
+		for(Map.Entry<Long, String> m : hm.entrySet()){
+			System.out.println(m.getKey() + m.getValue());
+		}
+		
 		String sent = "";
 		try {
 		    BufferedReader in = new BufferedReader(new FileReader(hostFile+hm.get(l)));
@@ -50,6 +55,7 @@ public class FileNode implements FileWorker{
 		        sent += str;
 		    in.close();
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
 		return sent;
 	}
