@@ -11,7 +11,7 @@ import lildoop.fileStorage.enums.RequestType;
 
 public class Messenger {
 	
-	private static final String MASTER_ADDRESS = "http://localhost:8080/restful/";
+	private static final String MASTER_ADDRESS = "http://localhost:8080/LilDoop/restful";
 	
 	public static HttpURLConnection postJSON(String url, String json)
 			throws MalformedURLException, IOException {
