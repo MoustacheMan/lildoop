@@ -26,7 +26,7 @@ public class FileMaster {
 		long l = -1;
 		id++;
 		for(int i = 0; i<2; i++){
-			if(serverLocation>ips.size())
+			if(serverLocation>=ips.size())
 				serverLocation=0;
 			if(ips.get(serverLocation)!=null){
 			FileClient temp = new FileClient(ips.get(serverLocation));
@@ -39,7 +39,7 @@ public class FileMaster {
 		return id;
 	}
 
-	public String retrieveData(long l) throws MalformedURLException, IOException {
+	public String retrieveData(long l) throws Exception {
 		for(String n : ips){
 			if(n!=null){
 			FileClient temp = new FileClient(n);
