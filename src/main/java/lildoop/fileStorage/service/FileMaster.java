@@ -1,10 +1,10 @@
-package fileStorage.concrete;
+package lildoop.fileStorage.service;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-import fileStorage.client.FileClient;
+import lildoop.fileStorage.client.FileClient;
 
 public class FileMaster {
 	

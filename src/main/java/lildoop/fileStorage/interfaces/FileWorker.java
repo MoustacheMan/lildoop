@@ -1,4 +1,4 @@
-package fileStorage.interfaces;
+package lildoop.fileStorage.interfaces;
 
 public interface FileWorker {
 

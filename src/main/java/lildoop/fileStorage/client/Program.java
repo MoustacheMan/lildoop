@@ -1,4 +1,4 @@
-package fileStorage.client;
+package lildoop.fileStorage.client;
 
 public class Program {
 

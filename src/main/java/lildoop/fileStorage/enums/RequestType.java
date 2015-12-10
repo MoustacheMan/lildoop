@@ -1,4 +1,4 @@
-package fileStorage.enums;
+package lildoop.fileStorage.enums;
 
 public enum RequestType {
 
