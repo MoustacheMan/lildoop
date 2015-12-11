@@ -39,7 +39,7 @@ public class Worker implements Runnable {
 		while(keepRunning) {
 			//Ask for work
 			try {
-				HttpURLConnection con = Messenger.requestJSON("/mapReduce/getData");
+				HttpURLConnection con = Messenger.requestJSONFromAddress(masterIP, "/restful/mapReduce/work");
 				//if got work
 				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 					//get query
@@ -47,7 +47,7 @@ public class Worker implements Runnable {
 					//do query
 					QueryResult result = doQuery(query);
 					//return list of result objects
-					Messenger.postJSON("mapReduce/result", result.getJSON());
+					Messenger.postJSONToAddress(masterIP, "/restful/mapReduce/result", result.getJSON());
 				}
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
@@ -69,7 +69,7 @@ public class Worker implements Runnable {
 		//Function
 		Function func = query.getFunc();
 		//Get data
-		String[][] data = getData(new JSONArray(query.getFileName()), query.getFunctionColumn(), query.getConditionColumn());
+		String[][] data = getData(new JSONArray(query.getFileName()), "query.getFunctionColumn()", "query.getConditionColumn()");
 		//Get condition
 		ConditionOperator cond = query.getCondition();
 		String param = query.getConditionValue();
