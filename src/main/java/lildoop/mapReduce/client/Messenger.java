@@ -10,6 +10,8 @@ public class Messenger {
 	
 	private static final String MASTER_ADDRESS = "http://localhost:8080/LilDoop/restful";
 	
+	private static final String PORT = "8081";
+	
 	public static HttpURLConnection postJSON(String url, String json)
 			throws MalformedURLException, IOException {
 
@@ -43,6 +45,7 @@ public class Messenger {
 	public static HttpURLConnection postJSONToAddress(String address, String url, String json)
 			throws MalformedURLException, IOException {
 
+//		HttpURLConnection connection = (HttpURLConnection) new URL(replacePort(address) + url).openConnection();
 		HttpURLConnection connection = (HttpURLConnection) new URL(address + url).openConnection();
 		connection.setDoOutput(true);
 
@@ -60,14 +63,23 @@ public class Messenger {
 	}
 	
 	public static HttpURLConnection requestJSONFromAddress(String address, String url) throws MalformedURLException, IOException {
+		
+//		HttpURLConnection connection = (HttpURLConnection) new URL(replacePort(address) + url).openConnection();
 		HttpURLConnection connection = (HttpURLConnection) new URL(address + url).openConnection();
 		connection.setRequestProperty("Content-type", "text/plain");
 		connection.setRequestProperty("Accept-Charset", "UTF-8");
 		connection.setRequestMethod("GET");
 		
-		connection.connect();
-		
 		return connection;
 	}
+	
+//	private static String replacePort(String address) {
+//		int colonFirstIndex = address.indexOf(':');
+//		int colonIndex = address.indexOf(':', colonFirstIndex + 1);
+//		String firstPart = address.substring(0, colonIndex + 1);
+//		String secondPart = address.substring(colonIndex + 5);
+//		System.out.println(firstPart + "8081" + secondPart);
+//		return firstPart + "8081" + secondPart;
+//	}
 
 }
