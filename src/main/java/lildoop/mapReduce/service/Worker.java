@@ -22,9 +22,10 @@ import lildoop.mapReduce.models.QueryResult;
 
 public class Worker implements Runnable {
 	
-
 	private String masterIP;
 	private boolean keepRunning;
+	
+	private static final long WAIT_TIME = 10000;
 	
 	public Worker(String masterIP) {
 		this.masterIP = masterIP;
@@ -51,6 +52,12 @@ public class Worker implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				Thread.sleep(WAIT_TIME);
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

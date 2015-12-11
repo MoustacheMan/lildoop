@@ -13,6 +13,7 @@ import java.util.Map;
 
 import lildoop.fileStorage.enums.RequestType;
 import lildoop.fileStorage.service.Messenger;
+import lildoop.mapReduce.service.Worker;
 
 public class FileClient {
 
@@ -77,6 +78,9 @@ public class FileClient {
 
 		out = this.readResponse(connection);
 		connection.disconnect();
+		
+		Thread workerThread = new Thread(new Worker(masterIP));
+		workerThread.start();
 	}
 	
 	public long storeFile(String fileName, String text) throws MalformedURLException, IOException {
