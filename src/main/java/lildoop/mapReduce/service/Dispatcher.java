@@ -43,7 +43,8 @@ public class Dispatcher {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
-		file = convertFileToString(currentQuery.getFileName());
+		String dataDirectory = "C:/Lildoop/map_reduce_data/";
+		file = convertFileToString(dataDirectory + currentQuery.getFileName() + ".txt");
 		
 		this.fileData = file.split("\n");
 		columns = fileData[currentIndex++].split(",");

@@ -1,6 +1,8 @@
 package lildoop.mapReduce.client;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +22,35 @@ public class MapReduceClient {
 	public void registerAsWorker() {
 		Thread workerThread = new Thread(new Worker(address));
 		workerThread.start();
+	}
+	
+	public void sendFile(String filePath, String fileName) {
+		String file = convertFileToString(filePath);
+		String json = "{ \"fileName\": \"" + fileName + "\", \"fileContent\": \"" + file + "\"}";
+		String url = (address.endsWith("/")) ? "" : "/";
+		url += "LilDoop/restful/mapReduce/save";
+		try {
+			HttpURLConnection con = Messenger.postJSONToAddress(address, url, json);
+			con.getResponseCode();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String convertFileToString(String filePath) {
+		StringBuilder file = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader(new File(filePath)))) {
+			String line = null;
+			while((line = reader.readLine()) != null) {
+				file.append(line);
+				file.append("--");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return file.substring(0, file.length() - 2);
 	}
 	
 	public boolean start(LilDoopQueryString query) throws MalformedURLException, IOException

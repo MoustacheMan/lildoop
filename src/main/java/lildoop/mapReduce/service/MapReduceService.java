@@ -1,5 +1,9 @@
 package lildoop.mapReduce.service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,11 +29,40 @@ public class MapReduceService {
 		return "Ping successful. Server available";
 	}
 	
+	@Path("/save")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response saveFileLocally(String jsonString) {
+		System.out.println("Saving file...");
+		String dataDirectory = "C:/Lildoop/map_reduce_data/";
+		JSONObject json = new JSONObject(jsonString);
+		String filePath = dataDirectory + json.getString("fileName") + ".txt";
+		writeFile(filePath, json.getString("fileContent"));
+		ResponseBuilder builder = Response.ok();
+		return builder.build();
+	}
+	
+	private void writeFile(String filePath, String data) {
+		File dataFile = new File(filePath);
+		String[] lines = data.split("--");
+		dataFile.getParentFile().mkdirs();
+		try (PrintWriter writer = new PrintWriter(new FileWriter(dataFile))) {
+			for (int i = 0; i < lines.length; i++) {
+				String line = lines[i];
+				writer.println(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Path("/start")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response startMapReduce(String jsonString) {
+		System.out.println("Processing query...");
 		JSONObject json = new JSONObject(jsonString);
 		currentDispatcher = new Dispatcher(new Query(json, false));
 		ResponseBuilder response = Response.accepted();
@@ -59,6 +92,7 @@ public class MapReduceService {
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getData() {
+		System.out.println("Sending result...");
 		String resultsJson = currentDispatcher.getResults();
 		ResponseBuilder builder = Response.ok();
 		builder.entity(resultsJson);

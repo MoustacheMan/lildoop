@@ -24,12 +24,12 @@ public class Runner {
 		worker4.registerAsWorker();
 		
 		MapReduceClient client = new MapReduceClient(address);
+		client.sendFile("C:/Users/David Gonzalez/Documents/~School~/CS/Distributed Systems/ExampleData/data1.txt", "ExampleData");
 		LilDoopQueryString queryBuilder = new LilDoopQueryString();
-//		queryBuilder.count("firstname").from("C:/Users/David Gonzalez/Documents/~School~/CS/Distributed Systems/ExampleData/data1.txt")
-//			.where("firstname", ConditionOperator.EQUAL, "Kelvin");
+//		queryBuilder.count("firstname").from("ExampleData").where("firstname", ConditionOperator.EQUAL, "Kelvin");
 		// Do a where also, sometime in the future
-		queryBuilder.sum("age").from("C:/Users/David Gonzalez/Documents/~School~/CS/Distributed Systems/ExampleData/data1.txt");
-//		queryBuilder.avg("age").from("C:/Users/David Gonzalez/Documents/~School~/CS/Distributed Systems/ExampleData/data1.txt");
+//		queryBuilder.sum("age").from("ExampleData");
+		queryBuilder.avg("age").from("ExampleData");
 		try {
 			client.start(queryBuilder);
 			
