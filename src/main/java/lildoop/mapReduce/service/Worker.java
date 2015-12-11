@@ -46,7 +46,7 @@ public class Worker implements Runnable {
 					//do query
 					QueryResult result = doQuery(query);
 					//return list of result objects
-					Messenger.postJSON("mapReduce/addResult", result.getJSON());
+					Messenger.postJSON("mapReduce/result", result.getJSON());
 				}
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
