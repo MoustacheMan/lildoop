@@ -35,7 +35,6 @@ public enum Function {
 		}
 	},	
 	AVG
-	
 	{
 		@Override
 		public QueryResult doFunction(String[][] data, ConditionOperator cond, String param) {
@@ -45,9 +44,10 @@ public enum Function {
 				if(cond.checkCondition(data[i][1], param)) {
 					count++;
 					sum+= Integer.parseInt(data[i][0]);
+					System.out.println(sum);
 				}
 			}
-			int value = count / sum;
+			int value = sum /count;
 			String json = "{function:" + this.name() + ",param:" + param + ",value:" + value + "}";
 			return new QueryResult(new JSONObject(json));
 		}

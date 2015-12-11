@@ -6,16 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import lildoop.fileStorage.enums.RequestType;
-import lildoop.fileStorage.service.Messenger;
+import lildoop.mapReduce.client.Messenger;
 import lildoop.mapReduce.enums.ConditionOperator;
 import lildoop.mapReduce.enums.Function;
 import lildoop.mapReduce.models.Query;
@@ -39,14 +34,14 @@ public class Worker implements Runnable {
 		while(keepRunning) {
 			//Ask for work
 			try {
-				System.out.println(masterIP + "/LilDoop/restful/mapReduce/status");
+//				System.out.println(masterIP + "/LilDoop/restful/mapReduce/status");
 				HttpURLConnection con = Messenger.requestJSONFromAddress(masterIP, "/LilDoop/restful/mapReduce/status");
 				int code = con.getResponseCode();
 				con.disconnect();
-				System.out.println("Response Code: " + code);
+//				System.out.println("Response Code: " + code);
 				//if got work
 				if(code == HttpURLConnection.HTTP_NOT_MODIFIED) {
-					System.out.println(masterIP + "/LilDoop/restful/mapReduce/work");
+//					System.out.println(masterIP + "/LilDoop/restful/mapReduce/work");
 					con = Messenger.requestJSONFromAddress(masterIP, "/LilDoop/restful/mapReduce/work");
 					//get query
 					Query query = getQueryFromStream(con.getInputStream());
@@ -55,19 +50,17 @@ public class Worker implements Runnable {
 					con.disconnect();
 					//return list of result objects
 					con = Messenger.postJSONToAddress(masterIP, "/LilDoop/restful/mapReduce/result", result.getJSON());
+					code = con.getResponseCode();
 					con.disconnect();
 				}
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
 				Thread.sleep(WAIT_TIME);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -91,10 +84,10 @@ public class Worker implements Runnable {
 		for(int i = 0; i < fileData.length(); i++) {
 			JSONObject obj = fileData.getJSONObject(i);
 			data[i][0] = obj.getString(functionColumn);
-			data[i][1] = obj.getString(conditionColumn);
+			data[i][1] = obj.optString(conditionColumn);
 		}
 		
-		return null;
+		return data;
 	}
 	
 	private Query getQueryFromStream(InputStream stream) {
@@ -102,9 +95,8 @@ public class Worker implements Runnable {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		try {
 			String json = reader.readLine();
-			newQuery = new Query(new JSONObject(json));
+			newQuery = new Query(new JSONObject(json), true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return newQuery;

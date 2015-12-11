@@ -67,6 +67,12 @@ public enum ConditionOperator {
 				throw new IllegalArgumentException("Value or param was not an int");
 			}
 		}
-	};	
+	},
+	NO_COND {
+		@Override
+		public boolean checkCondition(String value, String param) {
+			return true;
+		}
+	} ;	
 	public abstract boolean checkCondition(String value, String param);
 }

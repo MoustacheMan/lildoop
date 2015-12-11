@@ -1,11 +1,11 @@
 package lildoop.mapReduce.service;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 import org.json.JSONObject;
 
-import lildoop.fileStorage.client.FileClient;
 import lildoop.mapReduce.enums.Function;
 import lildoop.mapReduce.models.Query;
 import lildoop.mapReduce.models.QueryResult;
@@ -20,15 +20,14 @@ public class Dispatcher {
 	private int currentIndex;
 	private String[] columns;
 	private QueryResult totalResult;
-//	private final String resultFileName = "Map_Reduce_Result.txt";
-	private FileClient fileClient;
+//	private FileClient fileClient;
 	
-	public Dispatcher(Query query, FileClient fileClient) {
+	public Dispatcher(Query query) {
 		this.currentQuery = query;
 //		this.fileStream = null;
 		this.numSetsSent = 0;
 		this.numSetsReceived = 0;
-		this.fileClient = fileClient;
+//		this.fileClient = fileClient;
 		this.currentIndex = 0;
 		this.columns = null;
 		this.totalResult = null;
@@ -37,25 +36,41 @@ public class Dispatcher {
 	
 	private void readFile() {
 		String file = null;
-		try {
-			file = fileClient.retrieveFile(currentQuery.getFileName());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			file = fileClient.retrieveFile(currentQuery.getFileName());
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		file = convertFileToString(currentQuery.getFileName());
 		
 		this.fileData = file.split("\n");
 		columns = fileData[currentIndex++].split(",");
 	}
+	
+	public String convertFileToString(String filePath) {
+		StringBuilder file = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader(new File(filePath)))) {
+			String line = null;
+			while((line = reader.readLine()) != null) {
+				file.append(line);
+				file.append("\n");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return file.substring(0, file.length() - 2);
+	}
 
 	public JSONObject[] getNextWorkSet() {
 		int amount = 20;
+		int count = 0;
 		int endIndex = currentIndex + amount;
-		if (endIndex > fileData.length) {
+		if (endIndex >= fileData.length) {
 			endIndex = fileData.length;
 		}
-		JSONObject[] workData = new JSONObject[amount];
+		JSONObject[] workData = new JSONObject[endIndex - currentIndex];
 		for (int i = currentIndex; i < endIndex; i++) {
 			String[] data = fileData[i].split(",");
 			JSONObject row = new JSONObject();
@@ -64,7 +79,7 @@ public class Dispatcher {
 				String val = data[j];
 				row.put(column, val);
 			}
-			workData[i] = row;
+			workData[count++] = row;
 		}
 		currentIndex = endIndex;
 		numSetsSent++;
@@ -72,7 +87,6 @@ public class Dispatcher {
 	}
 	
 	public boolean isProccessing() {
-		// may run into race conditions or concurrency problems here
 		return (currentIndex < fileData.length) || (numSetsReceived < numSetsSent);
 	}
 	
@@ -95,9 +109,8 @@ public class Dispatcher {
 	}
 
 	private void aggregateResults(QueryResult result) {
-		// Assuming everything is the same just manipulating the vals
-		int resultVal = Integer.parseInt(result.getValue());
-		int totVal = Integer.parseInt(totalResult.getValue());
+		int resultVal = result.getValue();
+		int totVal = totalResult.getValue();
 		Function func = result.getFunction();
 		switch (func) {
 			case COUNT:
@@ -113,6 +126,6 @@ public class Dispatcher {
 			default:
 				throw new IllegalStateException("Specified function is not valid.");
 		}
-		totalResult.updateValue(new Integer(totVal).toString());
+		totalResult.updateValue(totVal);
 	}
 }

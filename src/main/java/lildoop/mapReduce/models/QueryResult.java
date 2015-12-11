@@ -9,7 +9,7 @@ public class QueryResult {
 	
 	private String param;
 	
-	private String value;
+	private int value;
 	
 	private JSONObject queryJson;
 	
@@ -19,9 +19,9 @@ public class QueryResult {
 	}
 
 	private void validateValues() throws IllegalArgumentException {
-		this.function = Function.valueOf(queryJson.getString("field").toUpperCase());
+		this.function = Function.valueOf(queryJson.getString("function").toUpperCase());
 		this.param = queryJson.getString("param");
-		this.value = queryJson.getString("value");
+		this.value = queryJson.getInt("value");
 	}
 	
 	public Function getFunction() {
@@ -32,14 +32,14 @@ public class QueryResult {
 		return param;
 	}
 
-	public String getValue() {
+	public int getValue() {
 		return value;
 	}
 	
-	public void updateValue(String newVal) {
-		this.value = newVal;
+	public void updateValue(int newVal) {
 		this.queryJson.remove("value");
-		this.queryJson.put("value", value);
+		this.queryJson.put("value", newVal);
+		this.value = newVal;
 	}
 
 	public JSONObject getQueryJson() {

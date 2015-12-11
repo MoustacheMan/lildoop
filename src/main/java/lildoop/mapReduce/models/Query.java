@@ -9,25 +9,32 @@ public class Query {
 	
 	private Function func;
 	private String funcColumn;
-	private String fileName;
+	private String data;
 	private ConditionOperator condition;
 	private String conditionColumn;
 	private String conditionValue;
 	private JSONObject queryJson;
+	private boolean isWork;
 	
-	public Query(JSONObject json) {
+	public Query(JSONObject json, boolean isWork) {
 		this.queryJson = json;
+		this.isWork = isWork;
 		// Verify the validty of the data like the fileName
 		validateValues();
 	}
 
 	private void validateValues() throws IllegalArgumentException {
 		this.func = Function.valueOf(queryJson.getString("field").toUpperCase());
-		this.conditionColumn = queryJson.getString("functionColumn");
-		this.fileName = queryJson.getString("data");
-		this.condition = ConditionOperator.valueOf(queryJson.getString("condition"));
-		this.conditionColumn = queryJson.getString("conditionColumn");
-		this.conditionValue = queryJson.getString("conditionValue");
+		this.funcColumn = queryJson.getString("functionColumn");
+		if (isWork) {
+			this.data = queryJson.getJSONArray("data").toString();
+		} else {
+			this.data = queryJson.getString("data");
+		}
+		
+		this.condition = queryJson.isNull("condition") ? ConditionOperator.NO_COND : ConditionOperator.valueOf(queryJson.getString("condition"));
+		this.conditionColumn = queryJson.isNull("conditionColumn") ? "null" : queryJson.getString("conditionColumn");
+		this.conditionValue = queryJson.isNull("conditionValue") ? funcColumn : queryJson.getString("conditionValue");
 	}
 
 	public Function getFunc() {
@@ -35,7 +42,7 @@ public class Query {
 	}
 
 	public String getFileName() {
-		return fileName;
+		return data;
 	}
 
 	public ConditionOperator getCondition() {

@@ -11,13 +11,12 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.json.JSONObject;
 
-import lildoop.fileStorage.client.FileClient;
 import lildoop.mapReduce.models.Query;
 
 @Path("/mapReduce")
 public class MapReduceService {
 	
-	private Dispatcher currentDispatcher;
+	private static Dispatcher currentDispatcher;
 	
 	@Path("/ping")
 	@GET
@@ -31,15 +30,10 @@ public class MapReduceService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response startMapReduce(String jsonString) {
-		System.out.println("<Start map reduce>");
-		// Get data from JSON
 		JSONObject json = new JSONObject(jsonString);
-		// Create dispatcher
-		currentDispatcher = new Dispatcher(new Query(json), new FileClient(""));
-		// send accepted response
+		currentDispatcher = new Dispatcher(new Query(json, false));
 		ResponseBuilder response = Response.accepted();
 		response.entity("Job accepted. Processing query.");
-		System.out.println("<End map reduce>");
 		return response.build();
 	}
 	
@@ -48,20 +42,19 @@ public class MapReduceService {
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getStatus() {
-		System.out.println("<Start status check>");
-		// send 304 if still running 200 when done
 		ResponseBuilder builder = null;
-		if (currentDispatcher != null && currentDispatcher.isProccessing()) {
+		if (currentDispatcher == null) {
+			builder = Response.noContent();
+		} else if (currentDispatcher.isProccessing()) {
 			builder = Response.notModified();
 		} else {
 			builder = Response.ok();
 		}
-		System.out.println("<End status check : code = " + builder.build().getStatusInfo().getStatusCode() + ">");
 		
 		return builder.build();
 	}
 	
-	@Path("/data")
+	@Path("/result")
 	@GET
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +62,7 @@ public class MapReduceService {
 		String resultsJson = currentDispatcher.getResults();
 		ResponseBuilder builder = Response.ok();
 		builder.entity(resultsJson);
+		currentDispatcher = null;
 		return builder.build();
 	}
 	
@@ -77,11 +71,11 @@ public class MapReduceService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getWork() {
-		// Get next data set
-		JSONObject[] rows = currentDispatcher.getNextWorkSet();
-		// Prep json using same json got just replace data with actual data
+		JSONObject[] rows = null;
+		synchronized(currentDispatcher) {
+			rows = currentDispatcher.getNextWorkSet();
+		}
 		String workJson = currentDispatcher.getWorkJson(rows);
-		// 200 ok response, add json and send
 		ResponseBuilder builder = Response.ok();
 		builder.entity(workJson);
 		return builder.build();
@@ -92,10 +86,10 @@ public class MapReduceService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response receiveResult(String jsonString) {
-		// Get data from json (func, param, result)
 		JSONObject json = new JSONObject(jsonString);
-		// Add to dispatcher result list/set
-		currentDispatcher.addResults(json);
+		synchronized(currentDispatcher) {
+			currentDispatcher.addResults(json);
+		}
 		ResponseBuilder builder = Response.ok();
 		return builder.build();
 	}

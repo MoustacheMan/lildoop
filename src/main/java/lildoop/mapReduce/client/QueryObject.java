@@ -1,4 +1,4 @@
-package lildoop.fileStorage.client;
+package lildoop.mapReduce.client;
 
 import lildoop.mapReduce.enums.ConditionOperator;
 

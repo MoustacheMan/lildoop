@@ -1,4 +1,4 @@
-package lildoop.fileStorage.service;
+package lildoop.mapReduce.client;
 
 import java.io.IOException;
 import java.io.OutputStream;
