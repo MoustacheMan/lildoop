@@ -28,12 +28,12 @@ public class LilDoopQueryString implements IQuery {
 		return this;
 	}
 
-	@Override
-	public LilDoopQueryString avg(String columnName) {
-		queryString.functionColumn = columnName;
-		queryString.field = "avg";
-		return this;
-	}
+//	@Override
+//	public LilDoopQueryString avg(String columnName) {
+//		queryString.functionColumn = columnName;
+//		queryString.field = "avg";
+//		return this;
+//	}
 
 	@Override
 	public void where(String columnName, ConditionOperator operation, String value) {
