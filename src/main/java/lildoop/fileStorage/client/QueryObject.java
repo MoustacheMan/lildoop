@@ -5,5 +5,6 @@ public class QueryObject {
 	public String field;
 	public Condition Condition;
 	public String table;
+	public String conditionData;
 	
 }
