@@ -70,6 +70,7 @@ public class FileNode implements FileWorker{
 		        sent += str;
 		    in.close();
 		} catch (IOException e) {
+			return e.getMessage();
 		}
 		return sent;
 	}
