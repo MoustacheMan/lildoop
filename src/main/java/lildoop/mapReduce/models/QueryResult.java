@@ -2,7 +2,6 @@ package lildoop.mapReduce.models;
 
 import org.json.JSONObject;
 
-import lildoop.mapReduce.enums.ConditionOperator;
 import lildoop.mapReduce.enums.Function;
 
 public class QueryResult {
@@ -16,7 +15,6 @@ public class QueryResult {
 	
 	public QueryResult(JSONObject json) {
 		this.queryJson = json;
-		// Verify the validty of the data like the fileName
 		validateValues();
 	}
 
@@ -26,6 +24,28 @@ public class QueryResult {
 		this.value = queryJson.getString("value");
 	}
 	
+	public Function getFunction() {
+		return function;
+	}
+
+	public String getParam() {
+		return param;
+	}
+
+	public String getValue() {
+		return value;
+	}
+	
+	public void updateValue(String newVal) {
+		this.value = newVal;
+		this.queryJson.remove("value");
+		this.queryJson.put("value", value);
+	}
+
+	public JSONObject getQueryJson() {
+		return queryJson;
+	}
+
 	public String getJSON() {
 		return queryJson.toString();
 	}

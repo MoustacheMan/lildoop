@@ -59,8 +59,13 @@ public class MapReduceService {
 	
 	@Path("/data")
 	@GET
+	@Consumes(MediaType.WILDCARD)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getData() {
-		throw new RuntimeException("Method not yet implemented");
+		String resultsJson = currentDispatcher.getResults();
+		ResponseBuilder builder = Response.ok();
+		builder.entity(resultsJson);
+		return builder.build();
 	}
 	
 	@Path("/work")
@@ -87,11 +92,6 @@ public class MapReduceService {
 		JSONObject json = new JSONObject(jsonString);
 		// Add to dispatcher result list/set
 		currentDispatcher.addResults(json);
-		// if done receiving
-//		if (!currentDispatcher.isProccessing()) {
-//			// write results to file
-//		}
-		
 		ResponseBuilder builder = Response.ok();
 		return builder.build();
 	}

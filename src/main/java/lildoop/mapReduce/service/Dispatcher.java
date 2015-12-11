@@ -6,7 +6,9 @@ import java.net.MalformedURLException;
 import org.json.JSONObject;
 
 import lildoop.fileStorage.client.FileClient;
+import lildoop.mapReduce.enums.Function;
 import lildoop.mapReduce.models.Query;
+import lildoop.mapReduce.models.QueryResult;
 
 public class Dispatcher {
 	
@@ -17,6 +19,7 @@ public class Dispatcher {
 	private int numSetsReceived;
 	private int currentIndex;
 	private String[] columns;
+	private QueryResult totalResult;
 //	private final String resultFileName = "Map_Reduce_Result.txt";
 	private FileClient fileClient;
 	
@@ -28,6 +31,7 @@ public class Dispatcher {
 		this.fileClient = fileClient;
 		this.currentIndex = 0;
 		this.columns = null;
+		this.totalResult = null;
 		readFile();
 	}
 	
@@ -72,12 +76,43 @@ public class Dispatcher {
 		return (currentIndex < fileData.length) || (numSetsReceived < numSetsSent);
 	}
 	
+	public String getResults() {
+		return totalResult.getJSON();
+	}
+	
 	public String getWorkJson(JSONObject[] rows) {
 		return currentQuery.getWorkJson(rows);
 	}
 	
 	public void addResults(JSONObject resultJson) {
+		if (totalResult == null) {
+			totalResult = new QueryResult(resultJson);
+		} else {
+			QueryResult result = new QueryResult(resultJson);
+			aggregateResults(result);
+		}
 		numSetsReceived++;
-		throw new RuntimeException("Method not yet implemented");
+	}
+
+	private void aggregateResults(QueryResult result) {
+		// Assuming everything is the same just manipulating the vals
+		int resultVal = Integer.parseInt(result.getValue());
+		int totVal = Integer.parseInt(totalResult.getValue());
+		Function func = result.getFunction();
+		switch (func) {
+			case COUNT:
+				totVal += resultVal;
+				break;
+			case SUM:
+				totVal += resultVal;
+				break;
+			case AVG:
+				totVal += resultVal;
+				totVal /= 2;
+				break;
+			default:
+				throw new IllegalStateException("Specified function is not valid.");
+		}
+		totalResult.updateValue(new Integer(totVal).toString());
 	}
 }
