@@ -68,11 +68,8 @@ public class Query {
 	
 	public String getWorkJson(JSONObject[] rows) {
 		JSONObject work = new JSONObject(queryJson, JSONObject.getNames(queryJson));
-		Object val = work.remove("data");
+		work.remove("data");
 		work.put("data", rows);
-//		if (val == null) {
-//			throw new IllegalStateException("daa field is not present in received Json");
-//		}
 		return work.toString();
 	}
 }
