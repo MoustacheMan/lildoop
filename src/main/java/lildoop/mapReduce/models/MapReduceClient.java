@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 
-import lildoop.fileStorage.client.LilDoopQueryString;
-import lildoop.fileStorage.service.Messenger;
+import lildoop.mapReduce.client.LilDoopQueryString;
+import lildoop.mapReduce.client.Messenger;
 import lildoop.mapReduce.service.Worker;
 
 public class MapReduceClient {
