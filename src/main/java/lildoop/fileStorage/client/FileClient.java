@@ -164,6 +164,7 @@ public class FileClient {
 		url += "LilDoop/restful/mapReduce/start";
 		HttpURLConnection connection = Messenger.postJSONToAddress(masterIP, url, json);
 		int statusCode = connection.getResponseCode();
+		connection.disconnect();
 		return (statusCode == HttpURLConnection.HTTP_ACCEPTED);
 	}
 	/*
@@ -177,7 +178,7 @@ public class FileClient {
 		int statusCode = connection.getResponseCode();
 		//304 - not modify
 		//200 - ok
-		
+		connection.disconnect();
 		return (statusCode != HttpURLConnection.HTTP_NOT_MODIFIED);
 	}
 
@@ -189,6 +190,7 @@ public class FileClient {
 		InputStream is = connection.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String json = br.readLine();
+		connection.disconnect();
 		return json;
 	}
 }

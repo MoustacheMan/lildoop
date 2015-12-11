@@ -70,9 +70,10 @@ public class LilDoopQueryString implements IQuery {
 	}
 	public static void example()
 	{
+		//this is how you create a query object
 		LilDoopQueryString query = new LilDoopQueryString();
-		//query.count("name").from("person").where("name", Condition.Equal, "kelvin").GenerateJson();
-		
-		
+		query.count("name").from("person").where("name", Condition.Equal, "kelvin");
+		// now you need to put this query in start() in FileClient class
+		// it will send your query to master
 	}
 }
