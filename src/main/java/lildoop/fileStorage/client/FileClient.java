@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -156,24 +157,35 @@ public class FileClient {
 	 * this is for send the job to master
 	 * POST
 	 */
-	public void start(String json) throws MalformedURLException, IOException
+	public boolean start(LilDoopQueryString query) throws MalformedURLException, IOException
 	{
-		
-//		String url = "baseUrl" +"/mapReduce/start";
-//		HttpURLConnection connection = Messenger.createConnection(url, RequestType.POST, "application/json");
-//		connection.connect();
-	
+		String json = query.GenerateJson();
+		String url = "LilDoop/restful/mapReduce/start";
+		HttpURLConnection connection = Messenger.postJSONToAddress(masterIP, url, json);
+		int statusCode = connection.getResponseCode();
+		return (statusCode == HttpURLConnection.HTTP_ACCEPTED);
 	}
 	/*
 	 * this will check and see if the status is complete
 	 */
-	public String getStatus()
+	public boolean isProcessingFinished() throws MalformedURLException, IOException
 	{
-		return "";
+		String url = "LilDoop/restful/mapReduce/status";
+		HttpURLConnection connection = Messenger.requestJSONFromAddress(masterIP, url);
+		int statusCode = connection.getResponseCode();
+		//304 - not modify
+		//200 - ok
+		
+		return (statusCode != HttpURLConnection.HTTP_NOT_MODIFIED);
 	}
 
-	public String getResult()
+	public String getResult() throws MalformedURLException, IOException
 	{
-		return "";
+		String url = "LilDoop/restful/mapReduce/result";
+		HttpURLConnection connection = Messenger.requestJSONFromAddress(masterIP, url);
+		InputStream is = connection.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		String json = br.readLine();
+		return json;
 	}
 }
