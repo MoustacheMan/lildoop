@@ -72,7 +72,7 @@ public class LilDoopQueryString implements IQuery {
 	{
 		//this is how you create a query object
 		LilDoopQueryString query = new LilDoopQueryString();
-		query.count("name").from("person").where("name", Condition.Equal, "kelvin");
+		query.count("name").from("person").where("name", ConditionOperator.EQUAL, "kelvin");
 		// now you need to put this query in start() in FileClient class
 		// it will send your query to master
 	}

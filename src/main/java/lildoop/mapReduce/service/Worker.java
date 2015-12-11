@@ -109,5 +109,9 @@ public class Worker implements Runnable {
 		}
 		return newQuery;
 	}
+	
+	public void stop() {
+		keepRunning = false;
+	}
 
 }
