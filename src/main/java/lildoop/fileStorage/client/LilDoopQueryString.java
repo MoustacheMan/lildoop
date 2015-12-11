@@ -13,34 +13,44 @@ public class LilDoopQueryString implements IQuery {
 		queryString = new QueryObject();
 	}
 	@Override
-	public void count(String columnName) {
-		queryString.columnName = columnName;
+	public LilDoopQueryString count(String columnName) {
+		queryString.functionColumn = columnName;
 		queryString.field = "count";
+		return this;
 	}
 
 	@Override
-	public void sum(String columnName) {
-		queryString.columnName = columnName;
+	public LilDoopQueryString sum(String columnName) {
+		queryString.functionColumn = columnName;
 		queryString.field = "sum";	
+		return this;
 	}
 
 	@Override
-	public void avg(String columnName) {
-		queryString.columnName = columnName;
-		queryString.field = "avg";	
+	public LilDoopQueryString avg(String columnName) {
+		queryString.functionColumn = columnName;
+		queryString.field = "avg";
+		return this;
 	}
 
 	@Override
-	public void where(String columnName, String operation, Condition value) {
-		queryString.Condition =value;
-		queryString.field = "count";
+	public void where(String columnName, Condition operation, String value) {
+		queryString.conditionColumn = columnName;
+		queryString.condition =operation;
+		queryString.conditionValue = value;
+		//return this;
 	}
 
 	@Override
-	public void from(String Table) {
-		queryString.table = Table;	
+	public LilDoopQueryString from(String Table) {
+		queryString.data = Table;
+		return this;
 	}
 
+	public QueryObject getObjectJson()
+	{
+		return queryString;
+	}
 	public String GenerateJson()
 	{
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -55,5 +65,12 @@ public class LilDoopQueryString implements IQuery {
 			e.printStackTrace();
 		}
 		return json;
+	}
+	public static void example()
+	{
+		LilDoopQueryString query = new LilDoopQueryString();
+		//query.count("name").from("person").where("name", Condition.Equal, "kelvin").GenerateJson();
+		
+		
 	}
 }

@@ -1,9 +1,16 @@
 package lildoop.fileStorage.client;
 
 public class QueryObject {
-	public String columnName;
+	public String functionColumn;
 	public String field;
-	public Condition Condition;
-	public String table;
+	public Condition condition;
+	public String data;
+	public String conditionValue;
+	public String conditionColumn;
+
+	public boolean IsCondition()
+	{
+		return true;
+	}
 	
 }

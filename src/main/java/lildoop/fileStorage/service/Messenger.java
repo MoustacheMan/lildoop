@@ -39,5 +39,35 @@ public class Messenger {
 		
 		return connection;
 	}
+	
+	public static HttpURLConnection postJSONToAddress(String address, String url, String json)
+			throws MalformedURLException, IOException {
+
+		HttpURLConnection connection = (HttpURLConnection) new URL(address + url).openConnection();
+		connection.setDoOutput(true);
+
+		connection.setRequestProperty("Content-type", "application/json");
+		connection.setRequestProperty("Accept-Charset", "UTF-8");
+		connection.setRequestMethod("POST");
+		
+		OutputStream outputStream = connection.getOutputStream();
+		outputStream.write(json.getBytes("UTF-8"));
+		outputStream.flush();
+		outputStream.close();
+		
+
+		return connection;
+	}
+	
+	public static HttpURLConnection requestJSONFromAddress(String address, String url) throws MalformedURLException, IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(address + url).openConnection();
+		connection.setRequestProperty("Content-type", "text/plain");
+		connection.setRequestProperty("Accept-Charset", "UTF-8");
+		connection.setRequestMethod("GET");
+		
+		connection.connect();
+		
+		return connection;
+	}
 
 }
