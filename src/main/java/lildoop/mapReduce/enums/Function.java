@@ -11,23 +11,21 @@ public enum Function {
 	COUNT
 	{
 		@Override
-		public List<QueryResult> doFunction(String[] data, ConditionOperator cond, String param) {
+		public QueryResult doFunction(String[] data, ConditionOperator cond, String param) {
 			int count = 0;
 			for(int i = 0; i < data.length; i++) {
 				if(cond.checkCondition(data[i], param)) {
 					count++;
 				}
 			}
-			List<QueryResult> results = new ArrayList<QueryResult>();
 			String json = "{function:" + this.name() + ",param:" + param + ",value:" + count + "}";
-			results.add(new QueryResult(new JSONObject(json)));
-			return results;
+			return new QueryResult(new JSONObject(json));
 		}
 	},	
 	SUM
 	{
 		@Override
-		public List<QueryResult> doFunction(String[] data, ConditionOperator cond, String param) {
+		public QueryResult doFunction(String[] data, ConditionOperator cond, String param) {
 			int sum = 0;
 			for(int i = 0; i < data.length; i++) {
 				if(cond.checkCondition(data[i], param)) {
@@ -36,15 +34,14 @@ public enum Function {
 			}
 			List<QueryResult> results = new ArrayList<QueryResult>();
 			String json = "{function:" + this.name() + ",param:" + param + ",value:" + sum + "}";
-			results.add(new QueryResult(new JSONObject(json)));
-			return results;
+			return new QueryResult(new JSONObject(json));
 		}
 	},	
 	AVG
 	
 	{
 		@Override
-		public List<QueryResult> doFunction(String[] data, ConditionOperator cond, String param) {
+		public QueryResult doFunction(String[] data, ConditionOperator cond, String param) {
 			int count = 0;
 			int sum = 0;
 			for(int i = 0; i < data.length; i++) {
@@ -56,10 +53,9 @@ public enum Function {
 			List<QueryResult> results = new ArrayList<QueryResult>();
 			int value = count / sum;
 			String json = "{function:" + this.name() + ",param:" + param + ",value:" + value + "}";
-			results.add(new QueryResult(new JSONObject(json)));
-			return results;
+			return new QueryResult(new JSONObject(json));
 		}
 	};
 	
-	public abstract List<QueryResult> doFunction(String[] data, ConditionOperator cond, String param);
+	public abstract QueryResult doFunction(String[] data, ConditionOperator cond, String param);
 }

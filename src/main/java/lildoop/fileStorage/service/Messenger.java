@@ -2,12 +2,9 @@ package lildoop.fileStorage.service;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import lildoop.fileStorage.enums.RequestType;
 
 public class Messenger {
 	

@@ -25,4 +25,8 @@ public class QueryResult {
 		this.param = queryJson.getString("param");
 		this.value = queryJson.getString("value");
 	}
+	
+	public String getJSON() {
+		return queryJson.toString();
+	}
 }
