@@ -71,7 +71,7 @@ public class FileService {
 	@Produces({ MediaType.TEXT_PLAIN })
 	@Path("/save")
 	public String sendResponse(@QueryParam("fileName") String name, @QueryParam("fileContent") String content) {
-		System.out.println("Got: " + name + " and " + content);
+//		System.out.println("Got: " + name + " and " + content);
 		try {
 			return ""+f.storeData(name, content);
 		} catch (Exception e) {

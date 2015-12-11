@@ -43,9 +43,9 @@ public class FileNode implements FileWorker{
 	@Override
 	public String retrieveData(long l) {
 		
-		for(Map.Entry<Long, String> m : hm.entrySet()){
-			System.out.println(m.getKey() + m.getValue());
-		}
+//		for(Map.Entry<Long, String> m : hm.entrySet()){
+//			System.out.println(m.getKey() + m.getValue());
+//		}
 		
 		String sent = "";
 		try {

@@ -26,7 +26,7 @@ public class Worker implements Runnable {
 	private String masterIP;
 	private boolean keepRunning;
 	
-	private static final long WAIT_TIME = 10000;
+	private static final long WAIT_TIME = 5000;
 	
 	public Worker(String masterIP) {
 		this.masterIP = masterIP;
@@ -39,15 +39,23 @@ public class Worker implements Runnable {
 		while(keepRunning) {
 			//Ask for work
 			try {
-				HttpURLConnection con = Messenger.requestJSONFromAddress(masterIP, "/LilDoop/restful/mapReduce/work");
+				System.out.println(masterIP + "/LilDoop/restful/mapReduce/status");
+				HttpURLConnection con = Messenger.requestJSONFromAddress(masterIP, "/LilDoop/restful/mapReduce/status");
+				int code = con.getResponseCode();
+				con.disconnect();
+				System.out.println("Response Code: " + code);
 				//if got work
-				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				if(code == HttpURLConnection.HTTP_NOT_MODIFIED) {
+					System.out.println(masterIP + "/LilDoop/restful/mapReduce/work");
+					con = Messenger.requestJSONFromAddress(masterIP, "/LilDoop/restful/mapReduce/work");
 					//get query
 					Query query = getQueryFromStream(con.getInputStream());
 					//do query
 					QueryResult result = doQuery(query);
+					con.disconnect();
 					//return list of result objects
-					Messenger.postJSONToAddress(masterIP, "/LilDoop/restful/mapReduce/result", result.getJSON());
+					con = Messenger.postJSONToAddress(masterIP, "/LilDoop/restful/mapReduce/result", result.getJSON());
+					con.disconnect();
 				}
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block

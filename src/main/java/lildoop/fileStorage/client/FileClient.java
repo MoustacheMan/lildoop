@@ -171,7 +171,8 @@ public class FileClient {
 	 */
 	public boolean isProcessingFinished() throws MalformedURLException, IOException
 	{
-		String url = "LilDoop/restful/mapReduce/status";
+		String url = (masterIP.endsWith("/")) ? "" : "/";
+		url += "LilDoop/restful/mapReduce/status";
 		HttpURLConnection connection = Messenger.requestJSONFromAddress(masterIP, url);
 		int statusCode = connection.getResponseCode();
 		//304 - not modify
@@ -182,7 +183,8 @@ public class FileClient {
 
 	public String getResult() throws MalformedURLException, IOException
 	{
-		String url = "LilDoop/restful/mapReduce/result";
+		String url = (masterIP.endsWith("/")) ? "" : "/";
+		url += "LilDoop/restful/mapReduce/start";
 		HttpURLConnection connection = Messenger.requestJSONFromAddress(masterIP, url);
 		InputStream is = connection.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));

@@ -31,6 +31,7 @@ public class MapReduceService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response startMapReduce(String jsonString) {
+		System.out.println("<Start map reduce>");
 		// Get data from JSON
 		JSONObject json = new JSONObject(jsonString);
 		// Create dispatcher
@@ -38,6 +39,7 @@ public class MapReduceService {
 		// send accepted response
 		ResponseBuilder response = Response.accepted();
 		response.entity("Job accepted. Processing query.");
+		System.out.println("<End map reduce>");
 		return response.build();
 	}
 	
@@ -46,13 +48,15 @@ public class MapReduceService {
 	@Consumes(MediaType.WILDCARD)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getStatus() {
+		System.out.println("<Start status check>");
 		// send 304 if still running 200 when done
 		ResponseBuilder builder = null;
-		if (currentDispatcher.isProccessing()) {
+		if (currentDispatcher != null && currentDispatcher.isProccessing()) {
 			builder = Response.notModified();
 		} else {
 			builder = Response.ok();
 		}
+		System.out.println("<End status check : code = " + builder.build().getStatusInfo().getStatusCode() + ">");
 		
 		return builder.build();
 	}

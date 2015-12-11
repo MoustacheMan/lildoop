@@ -7,6 +7,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 
+import lildoop.mapReduce.enums.ConditionOperator;
+
 public class LilDoopQueryString implements IQuery {
 	QueryObject queryString ;
 	public LilDoopQueryString() {
@@ -34,9 +36,9 @@ public class LilDoopQueryString implements IQuery {
 	}
 
 	@Override
-	public void where(String columnName, Condition operation, String value) {
+	public void where(String columnName, ConditionOperator operation, String value) {
 		queryString.conditionColumn = columnName;
-		queryString.condition =operation;
+		queryString.condition = operation;
 		queryString.conditionValue = value;
 		//return this;
 	}
