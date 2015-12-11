@@ -160,7 +160,8 @@ public class FileClient {
 	public boolean start(LilDoopQueryString query) throws MalformedURLException, IOException
 	{
 		String json = query.GenerateJson();
-		String url = "LilDoop/restful/mapReduce/start";
+		String url = (masterIP.endsWith("/")) ? "" : "/";
+		url += "LilDoop/restful/mapReduce/start";
 		HttpURLConnection connection = Messenger.postJSONToAddress(masterIP, url, json);
 		int statusCode = connection.getResponseCode();
 		return (statusCode == HttpURLConnection.HTTP_ACCEPTED);
