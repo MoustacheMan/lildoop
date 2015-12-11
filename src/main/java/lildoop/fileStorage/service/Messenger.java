@@ -2,12 +2,9 @@ package lildoop.fileStorage.service;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import lildoop.fileStorage.enums.RequestType;
 
 public class Messenger {
 	
@@ -29,6 +26,17 @@ public class Messenger {
 		outputStream.close();
 		
 
+		return connection;
+	}
+	
+	public static HttpURLConnection requestJSON(String url) throws MalformedURLException, IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(MASTER_ADDRESS + url).openConnection();
+		connection.setRequestProperty("Content-type", "text/plain");
+		connection.setRequestProperty("Accept-Charset", "UTF-8");
+		connection.setRequestMethod("GET");
+		
+		connection.connect();
+		
 		return connection;
 	}
 

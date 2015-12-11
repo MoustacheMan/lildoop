@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.json.JSONObject;
 
+import lildoop.fileStorage.client.FileClient;
 import lildoop.mapReduce.models.Query;
 
 @Path("/mapReduce")
@@ -33,7 +34,7 @@ public class MapReduceService {
 		// Get data from JSON
 		JSONObject json = new JSONObject(jsonString);
 		// Create dispatcher
-		currentDispatcher = new Dispatcher(new Query(json));
+		currentDispatcher = new Dispatcher(new Query(json), new FileClient(""));
 		// send accepted response
 		ResponseBuilder response = Response.accepted();
 		response.entity("Job accepted. Processing query.");
@@ -68,7 +69,7 @@ public class MapReduceService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getWork() {
 		// Get next data set
-		String[] rows = currentDispatcher.getNextWorkSet();
+		JSONObject[] rows = currentDispatcher.getNextWorkSet();
 		// Prep json using same json got just replace data with actual data
 		String workJson = currentDispatcher.getWorkJson(rows);
 		// 200 ok response, add json and send
@@ -87,9 +88,9 @@ public class MapReduceService {
 		// Add to dispatcher result list/set
 		currentDispatcher.addResults(json);
 		// if done receiving
-		if (!currentDispatcher.isProccessing()) {
-			// write results to file
-		}
+//		if (!currentDispatcher.isProccessing()) {
+//			// write results to file
+//		}
 		
 		ResponseBuilder builder = Response.ok();
 		return builder.build();

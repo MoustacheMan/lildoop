@@ -45,7 +45,7 @@ public class FileService {
 	@Path("/get")
 	@Consumes("text/plain")
 	@POST
-	public String getFile(@QueryParam("file") String value) throws NumberFormatException, MalformedURLException, IOException {
+	public String getFile(@QueryParam("file") String value) throws Exception {
 		if(value.contains(".")){
 			return f.retrieveData(value);
 		}else{
