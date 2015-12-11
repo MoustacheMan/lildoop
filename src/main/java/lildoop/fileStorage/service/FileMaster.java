@@ -19,7 +19,8 @@ public class FileMaster {
 	}
 	
 	public void addNode(String value){
-		ips.add(value);
+		if(!ips.contains(value))
+			ips.add(value);
 	}
 	
 	public long storeData(String fileName, String content) throws MalformedURLException, IOException {
