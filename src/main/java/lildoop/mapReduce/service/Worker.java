@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import lildoop.fileStorage.enums.RequestType;
@@ -68,12 +69,24 @@ public class Worker implements Runnable {
 		//Function
 		Function func = query.getFunc();
 		//Get data
-		String[] data = query.getFileName().split(",");
+		String[][] data = getData(new JSONArray(query.getFileName()), query.getFunctionColumn(), query.getConditionColumn());
 		//Get condition
 		ConditionOperator cond = query.getCondition();
 		String param = query.getConditionValue();
 		//return result of function
 		return func.doFunction(data, cond, param);
+	}
+	
+	private String[][] getData(JSONArray fileData, String functionColumn, String conditionColumn) {
+		String[][] data = new String[fileData.length()][2];
+		
+		for(int i = 0; i < fileData.length(); i++) {
+			JSONObject obj = fileData.getJSONObject(i);
+			data[i][0] = obj.getString(functionColumn);
+			data[i][1] = obj.getString(conditionColumn);
+		}
+		
+		return null;
 	}
 	
 	private Query getQueryFromStream(InputStream stream) {
