@@ -152,7 +152,7 @@ public class FileClient {
 	 * this is for send the job to master
 	 * POST
 	 */
-	public void Start(String json) throws MalformedURLException, IOException
+	public void start(String json) throws MalformedURLException, IOException
 	{
 		
 //		String url = "baseUrl" +"/mapReduce/start";
@@ -168,7 +168,7 @@ public class FileClient {
 		return "";
 	}
 
-	public String GetTheResult()
+	public String getResult()
 	{
 		return "";
 	}
